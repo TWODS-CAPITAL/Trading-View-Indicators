@@ -1,0 +1,6 @@
+//@version=5
+indicator("Bull Bear Power", shorttitle="BBP")
+lengthInput = input.int(13, title="Length")
+bullPower = high - ta.ema(close, lengthInput)
+bearPower = low - ta.ema(close, lengthInput)
+plot(bullPower + bearPower, title="BBPower")

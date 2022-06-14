@@ -1,0 +1,6 @@
+//@version=5
+indicator("Average Day Range", shorttitle="ADR")
+lengthInput = input.int(14, title="Length")
+smaHigh = ta.sma(high, lengthInput)
+smaLow = ta.sma(low, lengthInput)
+plot(smaHigh - smaLow, title="ADR")

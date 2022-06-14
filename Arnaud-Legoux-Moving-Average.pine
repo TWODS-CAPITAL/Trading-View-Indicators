@@ -1,0 +1,7 @@
+//@version=5
+indicator(title = "Arnaud Legoux Moving Average", shorttitle="ALMA", overlay=true, timeframe="", timeframe_gaps=true)
+source = close
+windowsize = input(title="Window Size", defval=9)
+offset = input.float(title="Offset", defval=0.85)
+sigma = input.float(title="Sigma", defval=6)
+plot(ta.alma(source, windowsize, offset, sigma))
