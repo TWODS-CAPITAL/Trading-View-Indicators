@@ -1,0 +1,9 @@
+//@version=5
+indicator(title="Detrended Price Oscillator", shorttitle="DPO", format=format.price, precision=2, timeframe="", timeframe_gaps=true)
+period_ = input.int(21, title="Length", minval=1)
+isCentered = input(false, title="Centered")
+barsback = period_/2 + 1
+ma = ta.sma(close, period_)
+dpo = isCentered ? close[barsback] - ma : close - ma[barsback]
+plot(dpo, offset = isCentered ? -barsback : 0, title="Detrended Price Oscillator", color=#43A047)
+hline(0, title="Zero Line", color = #787B86)

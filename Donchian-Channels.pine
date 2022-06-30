@@ -1,0 +1,10 @@
+//@version=5
+indicator(title="Donchian Channels", shorttitle="DC", overlay=true, timeframe="", timeframe_gaps=true)
+length = input.int(20, minval=1)
+lower = ta.lowest(length)
+upper = ta.highest(length)
+basis = math.avg(upper, lower)
+plot(basis, "Basis", color=#FF6D00)
+u = plot(upper, "Upper", color=#2962FF)
+l = plot(lower, "Lower", color=#2962FF)
+fill(u, l, color=color.rgb(33, 150, 243, 95), title="Background")
