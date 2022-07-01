@@ -1,0 +1,6 @@
+//@version=5
+indicator(title="Hull Moving Average", shorttitle="HMA", overlay=true, timeframe="", timeframe_gaps=true)
+length = input.int(9, minval=1)
+src = input(close, title="Source")
+hullma = ta.wma(2*ta.wma(src, length/2)-ta.wma(src, length), math.floor(math.sqrt(length)))
+plot(hullma)
