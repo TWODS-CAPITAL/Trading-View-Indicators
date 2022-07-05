@@ -1,0 +1,26 @@
+//@version=5
+indicator("Open Interest", "OI", format = format.volume)
+
+bool overwriteSymbolInput = input.bool(false, "Override symbol", inline = "Override symbol")
+string tickerInput = input.symbol("", "", inline = "Override symbol")
+
+string symbolOnly = str.substring(tickerInput, str.pos(tickerInput, ":") + 1)
+string userSymbol = overwriteSymbolInput ? symbolOnly : syminfo.prefix + ":" + syminfo.ticker
+string openInterestTicker = str.format("{0}_OI", userSymbol)
+string timeframe = syminfo.type == "futures" and timeframe.isintraday ? "1D" : timeframe.period
+[oiOpen, oiHigh, oiLow, oiClose, oiColorCond] = request.security(openInterestTicker, timeframe, [open, high, low, close, close > close[1]], ignore_invalid_symbol = true)
+oiOpen := oiOpen ? oiOpen : na
+oiHigh := oiHigh ? oiHigh : na
+oiLow := oiLow ? oiLow : na
+
+if barstate.islastconfirmedhistory and na(oiClose)
+    runtime.error(str.format("No Open Interest data found for the `{0}` symbol.", userSymbol))
+
+if barstate.isfirst
+    var table symbolTable = table.new(position.bottom_left, 1, 1, bgcolor = color.new(color.gray, 0))
+    table.cell(symbolTable, 0, 0, text = userSymbol + " open interest data: " + openInterestTicker, text_color = color.white, text_size = size.small)
+
+hasOHLC = ta.cum(oiOpen)
+color openInterestColor = oiColorCond ? color.teal : color.red
+plot(hasOHLC ? na : oiClose, "Futures Open Interest", openInterestColor, style = plot.style_stepline)
+plotcandle(oiOpen, oiHigh, oiLow, hasOHLC ? oiClose : na, "Crypto Open Interest", color = openInterestColor, wickcolor = openInterestColor, bordercolor = openInterestColor)

@@ -1,0 +1,8 @@
+//@version=5
+indicator(title="Net Volume", format=format.volume, timeframe="", timeframe_gaps=true)
+var cumVol = 0.
+cumVol += nz(volume)
+if barstate.islast and cumVol == 0
+    runtime.error("No volume is provided by the data vendor.")
+nv = math.sign(ta.change(close)) * volume
+plot(nv, color=color.blue, title="NV")
