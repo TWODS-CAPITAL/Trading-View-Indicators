@@ -1,0 +1,15 @@
+//@version=5
+indicator(title="Price Oscillator", shorttitle="PPO", format=format.price, precision=2, timeframe="", timeframe_gaps=true)
+shortlen=input.int(10, "Short Length", minval=1)
+longlen=input.int(21, "Long Length", minval=1)
+src = input(close, title="Source")
+exp = input(false, "exponential")
+esma(source, length)=>
+	s = ta.sma(source, length)
+	e = ta.ema(source, length)
+	exp ? e : s
+short = esma(src, shortlen)
+long = esma(src, longlen)
+po = (short - long)/long*100
+plot(po, color=#009688, title="OSC")
+hline(0, "Zero Line", color=#787B86)

@@ -1,2 +1,4 @@
 Indicators Not Included 
 - Correlation Coefficient 
+- Moon Phases 
+- Price Volume Trend 
