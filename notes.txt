@@ -2,3 +2,8 @@ Indicators Not Included
 - Correlation Coefficient 
 - Moon Phases 
 - Price Volume Trend 
+- Rob Booker - Intraday Pivot Points 
+- Rob Booker - Knoxville Divergence 
+- Rob Booker - Missed Pivot Points 
+- Rob Booker - Reversal
+- Rob Booker - Ziv Ghost Pivots 
