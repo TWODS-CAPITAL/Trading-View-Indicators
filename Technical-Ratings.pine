@@ -1,0 +1,476 @@
+//@version=5
+indicator(title="Technical Ratings", shorttitle="Technicals", precision=2)
+res = input.timeframe("", title="Indicator Timeframe")
+ratingSignal = input.string(defval = "All", title = "Rating is based on", options = ["MAs", "Oscillators", "All"])
+
+useMtf1 = input(false, "", inline="mtf1", group="Show MTF")
+mtf1 = input.timeframe("60", "", inline="mtf1", group="Show MTF")
+useMtf2 = input(false, "", inline="mtf2", group="Show MTF")
+mtf2 = input.timeframe("240", "", inline="mtf2", group="Show MTF")
+useMtf3 = input(true, "", inline="mtf3", group="Show MTF")
+mtf3 = input.timeframe("1D", "", inline="mtf3", group="Show MTF")
+useMtf4 = input(true, "", inline="mtf4", group="Show MTF")
+mtf4 = input.timeframe("1W", "", inline="mtf4", group="Show MTF")
+useMtf5 = input(true, "", inline="mtf5", group="Show MTF")
+mtf5 = input.timeframe("1M", "", inline="mtf5", group="Show MTF")
+
+colBuy = input(#5b9cf6, "Buy       ", group="Color Settings", inline="Buy Colors")
+colStrongBuy = input(#2962ff, "", group="Color Settings", inline="Buy Colors")
+colNeutral = input(#a8adbc, "Neutral ", group="Color Settings", inline="Neutral")
+colSell = input(#ef9a9a, "Sell     ", group="Color Settings", inline="Sell Colors")
+colStrongSell = input(#f44336, "",  group="Color Settings", inline="Sell Colors")
+tableTitleColor = input(#295b79, "Headers", group="Color Settings", inline="Headers")
+// Awesome Oscillator
+AO() =>
+    ta.sma(hl2, 5) - ta.sma(hl2, 34)
+// Stochastic RSI
+StochRSI() =>
+    rsi1 = ta.rsi(close, 14)
+    K = ta.sma(ta.stoch(rsi1, rsi1, rsi1, 14), 3)
+    D = ta.sma(K, 3)
+    [K, D]
+// Ultimate Oscillator
+tl() => close[1] < low ? close[1]: low
+uo(ShortLen, MiddlLen, LongLen) =>
+    Value1 = math.sum(ta.tr, ShortLen)
+    Value2 = math.sum(ta.tr, MiddlLen)
+    Value3 = math.sum(ta.tr, LongLen)
+    Value4 = math.sum(close - tl(), ShortLen)
+    Value5 = math.sum(close - tl(), MiddlLen)
+    Value6 = math.sum(close - tl(), LongLen)
+    float UO = na
+    if Value1 != 0 and Value2 != 0 and Value3 != 0
+        var0 = LongLen / ShortLen
+        var1 = LongLen / MiddlLen
+        Value7 = (Value4 / Value1) * (var0)
+        Value8 = (Value5 / Value2) * (var1)
+        Value9 = (Value6 / Value3)
+        UO := (Value7 + Value8 + Value9) / (var0 + var1 + 1)
+    UO
+// Ichimoku Cloud
+donchian(len) => math.avg(ta.lowest(len), ta.highest(len))
+ichimoku_cloud() =>
+    conversionLine = donchian(9)
+    baseLine = donchian(26)
+    leadLine1 = math.avg(conversionLine, baseLine)
+    leadLine2 = donchian(52)
+    [conversionLine, baseLine, leadLine1, leadLine2]
+
+calcRatingMA(ma, src) => na(ma) or na(src) ? na : (ma == src ? 0 : ( ma < src ? 1 : -1 ))
+calcRating(buy, sell) => buy ? 1 : ( sell ? -1 : 0 )
+calcRatingAll() =>
+    //============== MA =================
+    SMA10 = ta.sma(close, 10)
+    SMA20 = ta.sma(close, 20)
+    SMA30 = ta.sma(close, 30)
+    SMA50 = ta.sma(close, 50)
+    SMA100 = ta.sma(close, 100)
+    SMA200 = ta.sma(close, 200)
+
+    EMA10 = ta.ema(close, 10)
+    EMA20 = ta.ema(close, 20)
+    EMA30 = ta.ema(close, 30)
+    EMA50 = ta.ema(close, 50)
+    EMA100 = ta.ema(close, 100)
+    EMA200 = ta.ema(close, 200)
+
+    HullMA9 = ta.hma(close, 9)
+
+    // Volume Weighted Moving Average (VWMA)
+    VWMA = ta.vwma(close, 20)
+
+    [IC_CLine, IC_BLine, IC_Lead1, IC_Lead2] = ichimoku_cloud()
+
+    // ======= Other =============
+    // Relative Strength Index, RSI
+    RSI = ta.rsi(close,14)
+
+    // Stochastic
+    lengthStoch = 14
+    smoothKStoch = 3
+    smoothDStoch = 3
+    kStoch = ta.sma(ta.stoch(close, high, low, lengthStoch), smoothKStoch)
+    dStoch = ta.sma(kStoch, smoothDStoch)
+
+    // Commodity Channel Index, CCI
+    CCI = ta.cci(close, 20)
+
+    // Average Directional Index
+    float adxValue = na, float adxPlus = na, float adxMinus = na
+    [P, M, V] = ta.dmi(14, 14)
+    adxValue := V
+    adxPlus := P
+    adxMinus := M
+    // Awesome Oscillator
+    ao = AO()
+
+    // Momentum
+    Mom = ta.mom(close, 10)
+    // Moving Average Convergence/Divergence, MACD
+    [macdMACD, signalMACD, _] = ta.macd(close, 12, 26, 9)
+    // Stochastic RSI
+    [Stoch_RSI_K, Stoch_RSI_D] = StochRSI()
+    // Williams Percent Range
+    WR = ta.wpr(14)
+
+    // Bull / Bear Power
+    BullPower = high - ta.ema(close, 13)
+    BearPower = low - ta.ema(close, 13)
+    // Ultimate Oscillator
+    UO = uo(7,14,28)
+    if not na(UO)
+        UO := UO * 100
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    PriceAvg = ta.ema(close, 50)
+    DownTrend = close < PriceAvg
+    UpTrend = close > PriceAvg
+    // calculate trading recommendation based on SMA/EMA
+    float ratingMA = 0
+    float ratingMAC = 0
+
+    float ratingSMA10 = na
+    if not na(SMA10)
+        ratingSMA10 := calcRatingMA(SMA10, close)
+        ratingMA := ratingMA + ratingSMA10
+        ratingMAC := ratingMAC + 1
+    float ratingSMA20 = na
+    if not na(SMA20)
+        ratingSMA20 := calcRatingMA(SMA20, close)
+        ratingMA := ratingMA + ratingSMA20
+        ratingMAC := ratingMAC + 1
+    float ratingSMA30 = na
+    if not na(SMA30)
+        ratingSMA30 := calcRatingMA(SMA30, close)
+        ratingMA := ratingMA + ratingSMA30
+        ratingMAC := ratingMAC + 1
+    float ratingSMA50 = na
+    if not na(SMA50)
+        ratingSMA50 := calcRatingMA(SMA50, close)
+        ratingMA := ratingMA + ratingSMA50
+        ratingMAC := ratingMAC + 1
+    float ratingSMA100 = na
+    if not na(SMA100)
+        ratingSMA100 := calcRatingMA(SMA100, close)
+        ratingMA := ratingMA + ratingSMA100
+        ratingMAC := ratingMAC + 1
+    float ratingSMA200 = na
+    if not na(SMA200)
+        ratingSMA200 := calcRatingMA(SMA200, close)
+        ratingMA := ratingMA + ratingSMA200
+        ratingMAC := ratingMAC + 1
+
+    float ratingEMA10 = na
+    if not na(EMA10)
+        ratingEMA10 := calcRatingMA(EMA10, close)
+        ratingMA := ratingMA + ratingEMA10
+        ratingMAC := ratingMAC + 1
+    float ratingEMA20 = na
+    if not na(EMA20)
+        ratingEMA20 := calcRatingMA(EMA20, close)
+        ratingMA := ratingMA + ratingEMA20
+        ratingMAC := ratingMAC + 1
+    float ratingEMA30 = na
+    if not na(EMA30)
+        ratingEMA30 := calcRatingMA(EMA30, close)
+        ratingMA := ratingMA + ratingEMA30
+        ratingMAC := ratingMAC + 1
+    float ratingEMA50 = na
+    if not na(EMA50)
+        ratingEMA50 := calcRatingMA(EMA50, close)
+        ratingMA := ratingMA + ratingEMA50
+        ratingMAC := ratingMAC + 1
+    float ratingEMA100 = na
+    if not na(EMA100)
+        ratingEMA100 := calcRatingMA(EMA100, close)
+        ratingMA := ratingMA + ratingEMA100
+        ratingMAC := ratingMAC + 1
+    float ratingEMA200 = na
+    if not na(EMA200)
+        ratingEMA200 := calcRatingMA(EMA200, close)
+        ratingMA := ratingMA + ratingEMA200
+        ratingMAC := ratingMAC + 1
+
+    float ratingHMA = na
+    if not na(HullMA9)
+        ratingHMA := calcRatingMA(HullMA9, close)
+        ratingMA := ratingMA + ratingHMA
+        ratingMAC := ratingMAC + 1
+
+    float ratingVWMA = na
+    if not na(VWMA)
+        ratingVWMA := calcRatingMA(VWMA, close)
+        ratingMA := ratingMA + ratingVWMA
+        ratingMAC := ratingMAC + 1
+
+    float ratingIC = na
+    if not (na(IC_Lead1) or na(IC_Lead2) or na(close) or na(close[1]) or na(IC_BLine) or na(IC_CLine))
+        ratingIC := calcRating(
+         IC_Lead1 > IC_Lead2 and close > IC_Lead1 and close < IC_BLine and close[1] < IC_CLine and close > IC_CLine,
+         IC_Lead2 > IC_Lead1 and close < IC_Lead2 and close > IC_BLine and close[1] > IC_CLine and close < IC_CLine)
+    if not na(ratingIC)
+        ratingMA := ratingMA + ratingIC
+        ratingMAC := ratingMAC + 1
+
+    ratingMA := ratingMAC > 0 ? ratingMA / ratingMAC : na
+
+    float ratingOther = 0
+    float ratingOtherC = 0
+
+    float ratingRSI = na
+    if not(na(RSI) or na(RSI[1]))
+        ratingRSI := calcRating(RSI < 30 and RSI[1] < RSI, RSI > 70 and RSI[1] > RSI)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingRSI
+
+    float ratingStoch = na
+    if not(na(kStoch) or na(dStoch) or na(kStoch[1]) or na(dStoch[1]))
+        ratingStoch := calcRating(kStoch < 20 and dStoch < 20 and kStoch > dStoch and kStoch[1] < dStoch[1], kStoch > 80 and dStoch > 80 and kStoch < dStoch and kStoch[1] > dStoch[1])
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingStoch
+
+    float ratingCCI = na
+    if not(na(CCI) or na(CCI[1]))
+        ratingCCI := calcRating(CCI < -100 and CCI > CCI[1], CCI > 100 and CCI < CCI[1])
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingCCI
+
+    float ratingADX = na
+    if not(na(adxValue) or na(adxPlus[1]) or na(adxMinus[1]) or na(adxPlus) or na(adxMinus))
+        ratingADX := calcRating(adxValue > 20 and adxPlus[1] < adxMinus[1] and adxPlus > adxMinus, adxValue > 20 and adxPlus[1] > adxMinus[1] and adxPlus < adxMinus)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingADX
+
+    float ratingAO = na
+    if not(na(ao) or na(ao[1]))
+        ratingAO := calcRating(ta.crossover(ao,0) or (ao > 0 and ao[1] > 0 and ao > ao[1] and ao[2] > ao[1]), ta.crossunder(ao,0) or (ao < 0 and ao[1] < 0 and ao < ao[1] and ao[2] < ao[1]))
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingAO
+
+    float ratingMOM = na
+    if not(na(Mom) or na(Mom[1]))
+        ratingMOM := calcRating(Mom > Mom[1], Mom < Mom[1])
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingMOM
+
+    float ratingMACD = na
+    if not(na(macdMACD) or na(signalMACD))
+        ratingMACD := calcRating(macdMACD > signalMACD, macdMACD < signalMACD)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingMACD
+
+    float ratingStoch_RSI = na
+    if not(na(DownTrend) or na(UpTrend) or na(Stoch_RSI_K) or na(Stoch_RSI_D) or na(Stoch_RSI_K[1]) or na(Stoch_RSI_D[1]))
+        ratingStoch_RSI := calcRating(
+         DownTrend and Stoch_RSI_K < 20 and Stoch_RSI_D < 20 and Stoch_RSI_K > Stoch_RSI_D and Stoch_RSI_K[1] < Stoch_RSI_D[1],
+         UpTrend and Stoch_RSI_K > 80 and Stoch_RSI_D > 80 and Stoch_RSI_K < Stoch_RSI_D and Stoch_RSI_K[1] > Stoch_RSI_D[1])
+    if not na(ratingStoch_RSI)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingStoch_RSI
+
+    float ratingWR = na
+    if not(na(WR) or na(WR[1]))
+        ratingWR := calcRating(WR < -80 and WR > WR[1], WR > -20 and WR < WR[1])
+    if not na(ratingWR)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingWR
+
+    float ratingBBPower = na
+    if not(na(UpTrend) or na(DownTrend) or na(BearPower) or na(BearPower[1]) or na(BullPower) or na(BullPower[1]))
+        ratingBBPower := calcRating(
+         UpTrend and BearPower < 0 and BearPower > BearPower[1],
+         DownTrend and BullPower > 0 and BullPower < BullPower[1])
+    if not na(ratingBBPower)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingBBPower
+
+    float ratingUO = na
+    if not(na(UO))
+        ratingUO := calcRating(UO > 70, UO < 30)
+    if not na(ratingUO)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingUO
+
+    ratingOther := ratingOtherC > 0 ? ratingOther / ratingOtherC : na
+
+    float ratingTotal = 0
+    float ratingTotalC = 0
+    if not na(ratingMA)
+        ratingTotal := ratingTotal + ratingMA
+        ratingTotalC := ratingTotalC + 1
+    if not na(ratingOther)
+        ratingTotal := ratingTotal + ratingOther
+        ratingTotalC := ratingTotalC + 1
+    ratingTotal := ratingTotalC > 0 ? ratingTotal / ratingTotalC : na
+
+    [ratingTotal, ratingOther, ratingMA]
+
+StrongBound = 0.5
+WeakBound = 0.1
+
+getSignal(ratingTotal, ratingOther, ratingMA) =>
+    float _res = ratingTotal
+    if ratingSignal == "MAs"
+        _res := ratingMA
+    if ratingSignal == "Oscillators"
+        _res := ratingOther
+    _res
+
+[ratingTotalCurrent, ratingOtherCurrent, ratingMACurrent]  = request.security(syminfo.tickerid, res, calcRatingAll())
+[ratingTotal_mtf1,   ratingOther_mtf1,   ratingMA_mtf1]    = request.security(syminfo.tickerid, mtf1, calcRatingAll())
+[ratingTotal_mtf2,   ratingOther_mtf2,   ratingMA_mtf2]    = request.security(syminfo.tickerid, mtf2, calcRatingAll())
+[ratingTotal_mtf3,   ratingOther_mtf3,   ratingMA_mtf3]    = request.security(syminfo.tickerid, mtf3, calcRatingAll())
+[ratingTotal_mtf4,   ratingOther_mtf4,   ratingMA_mtf4]    = request.security(syminfo.tickerid, mtf4, calcRatingAll())
+[ratingTotal_mtf5,   ratingOther_mtf5,   ratingMA_mtf5]    = request.security(syminfo.tickerid, mtf5, calcRatingAll())
+
+tradeSignal = getSignal(ratingTotalCurrent, ratingOtherCurrent, ratingMACurrent)
+
+calcRatingStatus(value) =>
+    if na(value)
+        "-"
+    else if -StrongBound > value
+        "Strong\nSell"
+    else if value < -WeakBound
+        "Sell   "
+    else if value > StrongBound
+        "Strong\nBuy "
+    else if value > WeakBound
+        "Buy    "
+    else
+        "Neutral"
+
+allRatingsArray = array.from("All", calcRatingStatus(ratingTotalCurrent), calcRatingStatus(ratingTotal_mtf1), calcRatingStatus(ratingTotal_mtf2),
+                  calcRatingStatus(ratingTotal_mtf3), calcRatingStatus(ratingTotal_mtf4), calcRatingStatus(ratingTotal_mtf5))
+
+oscRatingsArray = array.from("Osc", calcRatingStatus(ratingOtherCurrent), calcRatingStatus(ratingOther_mtf1), calcRatingStatus(ratingOther_mtf2),
+                  calcRatingStatus(ratingOther_mtf3), calcRatingStatus(ratingOther_mtf4), calcRatingStatus(ratingOther_mtf5))
+
+maRatingsArray = array.from("MAs", calcRatingStatus(ratingMACurrent), calcRatingStatus(ratingMA_mtf1), calcRatingStatus(ratingMA_mtf2),
+                 calcRatingStatus(ratingMA_mtf3), calcRatingStatus(ratingMA_mtf4), calcRatingStatus(ratingMA_mtf5))
+
+currentRes = res==""?timeframe.period=="D"?"1D":
+					 timeframe.period=="W"?"1W":
+					 timeframe.period=="M"?"1M":
+					 timeframe.period:res
+allResArray = array.from("TF", currentRes, mtf1, mtf2, mtf3, mtf4, mtf5)
+usedMtfArray = array.from(true, true, useMtf1, useMtf2, useMtf3, useMtf4, useMtf5)
+
+removeUnused(duplicatedIndex) =>
+    if array.size(duplicatedIndex) > 0
+        for j=0 to array.size(duplicatedIndex)-1
+            int currentDupIndex  = array.shift(duplicatedIndex)
+            array.remove(allResArray,     currentDupIndex-j)
+            array.remove(usedMtfArray,    currentDupIndex-j)
+            array.remove(allRatingsArray, currentDupIndex-j)
+            array.remove(oscRatingsArray, currentDupIndex-j)
+            array.remove(maRatingsArray,  currentDupIndex-j)
+
+eraseDuplicatedAndDisabledTf() =>
+    int[] duplicatedIndex = array.new_int()
+    for m=1 to array.size(allResArray)-1
+        bool isCurrentMtfDisabled = array.get(usedMtfArray, m) == false
+        if isCurrentMtfDisabled
+            array.push(duplicatedIndex, m)
+    removeUnused(duplicatedIndex)
+
+    for m=1 to array.size(allResArray)-1
+        int firstSearchElemIndex = array.indexof(allResArray, array.get(allResArray, m))
+        int lastSearchElemIndex = array.lastindexof(allResArray, array.get(allResArray, m))
+        if firstSearchElemIndex == lastSearchElemIndex or array.indexof(duplicatedIndex, lastSearchElemIndex) != -1
+            continue
+        string searchElem = array.get(allResArray, firstSearchElemIndex)
+        for i=firstSearchElemIndex+1 to lastSearchElemIndex
+            string currentElem = array.get(allResArray, i)
+            if searchElem == currentElem
+                array.push(duplicatedIndex, i)
+    removeUnused(duplicatedIndex)
+
+poscond = tradeSignal > WeakBound
+negcond = tradeSignal < -WeakBound
+posseries = poscond ? tradeSignal : 0
+negseries = negcond ? tradeSignal : 0
+count_rising(plot) =>
+    v_plot = plot > 0 ? plot : -plot
+    var count = 0
+    if v_plot == 0
+        count := 0
+    else if v_plot >= v_plot[1]
+        count := math.min(5, count + 1)
+    else if v_plot < v_plot[1]
+        count := math.max(1, count - 1)
+    count
+poscount = count_rising(posseries)
+negcount = count_rising(negseries)
+_pc = poscond ? poscount : negcond ? negcount : 0
+
+colorTransp(col, transp) =>
+    red = color.r(col)
+    green = color.g(col)
+    blue = color.b(col)
+    color.rgb(red, green, blue, transp)
+
+hline(1, color=colorTransp(colBuy, 50), linestyle=hline.style_solid)
+hline(0.5, color=colorTransp(colBuy, 50), linestyle=hline.style_dashed)
+hline(-1, color=colorTransp(colSell, 50), linestyle=hline.style_solid)
+hline(-0.5, color=colorTransp(colSell, 50), linestyle=hline.style_dashed)
+
+f_cellBgColor(_signal) =>
+    _returnColor = tableTitleColor
+    if _signal == "Sell   "
+        _returnColor := colSell
+    else if _signal == "Strong\nSell"
+        _returnColor := colStrongSell
+    else if _signal == "Buy    "
+        _returnColor := colBuy
+    else if _signal == "Strong\nBuy "
+        _returnColor := colStrongBuy
+    else if _signal == "Neutral" or _signal == "-"
+        _returnColor := colNeutral
+    _returnColor
+
+f_cellAlign(_cellTitle) =>
+    _align = text.align_left
+    if _cellTitle == "MAs" or _cellTitle == "Osc" or _cellTitle == "All" or _cellTitle == "-"
+        _align := text.align_center
+    _align
+
+f_addCell(_table, _column, _row, _cellTitle) =>
+    table.cell(_table, _column, _row, _cellTitle, text_color=color.white, text_halign=f_cellAlign(_cellTitle), bgcolor=f_cellBgColor(_cellTitle), text_size=size.small)
+
+f_drawInfo() =>
+    var t1 = table.new(position.middle_right, 4, array.size(allRatingsArray), frame_width=2, frame_color=color.white, border_width=1, border_color=color.white)
+    eraseDuplicatedAndDisabledTf()
+    timeframesCount = array.size(allResArray)
+    if timeframesCount < 3
+        for i=0 to timeframesCount-1
+            f_addCell(t1, i, 1, array.get(maRatingsArray, i))
+            f_addCell(t1, i, 2, array.get(oscRatingsArray, i))
+            f_addCell(t1, i, 3, array.get(allRatingsArray, i))
+    else
+        for i=0 to timeframesCount-1
+            f_addCell(t1, 0, i, array.get(allResArray, i))
+            if ratingSignal == "All"
+                f_addCell(t1, 1, i, array.get(maRatingsArray, i))
+                f_addCell(t1, 2, i, array.get(oscRatingsArray, i))
+                f_addCell(t1, 3, i, array.get(allRatingsArray, i))
+            if ratingSignal == "Oscillators"
+                f_addCell(t1, 1, i, array.get(oscRatingsArray, i))
+            if ratingSignal == "MAs"
+                f_addCell(t1, 1, i, array.get(maRatingsArray, i))
+
+col_buy = color.from_gradient(tradeSignal, 0.0, 0.2, colNeutral, colStrongBuy)
+col_sell = color.from_gradient(tradeSignal, -0.2, 0.0, colStrongSell, colNeutral)
+col_gradient = color.from_gradient(tradeSignal, -0.2, 0.2, col_sell, col_buy)
+
+if barstate.islast
+    f_drawInfo()
+
+plot(tradeSignal, title="Rating", linewidth = 1, style = plot.style_columns, color = color.new(col_gradient, 50 - _pc * 10))
+_cond1 = ta.crossunder(tradeSignal, -WeakBound)
+alertcondition(_cond1, "Sell", "Ratings changed to Sell")
+_cond2 = ta.crossover(tradeSignal, WeakBound)
+alertcondition(_cond2, "Buy", "Ratings changed to Buy")
+_cond3 = ta.crossunder(tradeSignal, -StrongBound)
+alertcondition(_cond3, "Strong Sell", "Ratings changed to Strong Sell")
+_cond4 = ta.crossover(tradeSignal, StrongBound)
+alertcondition(_cond4, "Strong Buy", "Ratings changed to Strong Buy")
