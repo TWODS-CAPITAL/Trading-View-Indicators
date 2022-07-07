@@ -26,4 +26,4 @@ This Trading View Library consist of the following Technical Indicators.🏦
 
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
 
-Happy Developing 🚀👨🏻‍💻
+<h3>Happy Developing 🚀👨🏻‍💻</h3>
