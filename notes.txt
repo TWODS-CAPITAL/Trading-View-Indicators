@@ -7,3 +7,4 @@ Indicators Not Included
 - Rob Booker - Missed Pivot Points 
 - Rob Booker - Reversal
 - Rob Booker - Ziv Ghost Pivots 
+- Volume
