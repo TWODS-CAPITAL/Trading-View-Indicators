@@ -6,6 +6,8 @@
 Technical indicators are used by traders to gain insight into the supply and demand of securities and market psychology. Together, these indicators form the basis of technical analysis. Metrics, such as trading volume, provide clues as to whether a price move will continue. In this way, indicators can be used to generate buy and sell signals. In this list, you'll learn about seven technical indicators to add to your trading toolkit.
 </p>
 
+All Technical Indicators are present in <a href="https://github.com/TWODS-CAPITAL/Trading-View-Indicators/tree/main/Technical-Indicators"> Technical Indicator Folder. </a>
+
 <h4>Where to Input the code from the Pine Script. </h4>
 
 <ul>
