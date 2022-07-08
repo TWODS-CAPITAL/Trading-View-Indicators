@@ -18,7 +18,7 @@ All Technical Indicators are present in <a href="https://github.com/TWODS-CAPITA
 <li>Then Run the script and Wait for the indicator to get applied. 📈</li>
 </ul>
 
-This Trading View Library consist of the following Technical Indicators.🏦
+<h2><b>This Trading View Library consist of the following Technical Indicators.🏦</b></h2>
 <ol>
 <li>24-HR Volume 📈</li>
 <p>Volume is the total amount of assets traded in a specific period of time. The 24-hour Volume indicator is used to measure the total volume of a symbol traded in the last 24 hours, expressed as in currency. It can be used to measure the market's interest in a particular symbol.
