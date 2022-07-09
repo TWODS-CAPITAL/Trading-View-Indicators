@@ -53,6 +53,21 @@ The true range indicator is taken as the greatest of the following: current high
 <li>Awesome Oscillator 📈</li>
 <p>The Awesome Oscillator Indicator (AO) is a technical analysis indicator created by American trader Bill Williams as a tool to determine whether bullish or bearish forces dominate the market. It measures the market momentum with the aim of detecting potential trend direction or trend reversals. The market momentum is evaluated using a combination of a shorter time frame and longer time frame simple moving averages; in other words, it considers the recent momentum in comparison with a higher frame momentum.</p>
 
+<li>Balance of Power 📈</li>
+<p>The Balance of Power (BOP) indicator uses price to measure buying and selling pressure. It determines the strength of the buyers and sellers by looking at how strongly the price has changed, rather than using volume.</p>
+
+<li>Bollinger Bands Width 📈</li>
+<p>The Bollinger Band Width is the difference between the upper and the lower Bollinger BandsOpens in a new window divided by the middle band. This technical indicator provides an easy way to visualize consolidation before price movements (low bandwidth values) or periods of higher volatility (high bandwidth values). The Bollinger Band Width uses the same two parameters as the Bollinger Bands: a simple moving- average period (for the middle band) and the number of standard deviations by which the upper and lower bands should be offset from the middle band.</p>
+
+<li>Bollinger Bands 📈</li>
+<p>A Bollinger Band® is a technical analysis tool defined by a set of trendlines plotted two standard deviations (positively and negatively) away from a simple moving average (SMA) of a security's price, but which can be adjusted to user preferences.
+Bollinger Bands® were developed and copyrighted by famous technical trader John Bollinger, designed to discover opportunities that give investors a higher probability of properly identifying when an asset is oversold or overbought.
+</p>
+
+<li>Bull/Bear Power 📈</li>
+<p>Bull power rises when bulls are stronger and falls when they are weaker, even becoming negative when they are utterly weak.
+Bear power, by contrast, is the capacity of bears to push prices below the moving average. The distance between the low and the EMA, which widens when the bears are weaker and narrows when they are stronger, gives this figure. Bear power is typically negative, so if it turns positive, the bulls have taken complete control.</p>
+
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
 
