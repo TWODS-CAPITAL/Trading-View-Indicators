@@ -68,6 +68,41 @@ Bollinger Bands® were developed and copyrighted by famous technical trader John
 <p>Bull power rises when bulls are stronger and falls when they are weaker, even becoming negative when they are utterly weak.
 Bear power, by contrast, is the capacity of bears to push prices below the moving average. The distance between the low and the EMA, which widens when the bears are weaker and narrows when they are stronger, gives this figure. Bear power is typically negative, so if it turns positive, the bulls have taken complete control.</p>
 
+<li>Chaikin Money Flow 📈 </li>
+<p>The Chaikin Money Flow (CMF) is an indicator created by Marc Chaikin in the 1980s to monitor the accumulation and distribution of a stock over a specified period. The default CMF period is 21 days. The indicator readings range between +1 and -1. Any crosses above or below 0 can be used to identify changes in money flow, as well as buying or selling momentum.</p>
+
+<li>Chaikin Oscillator 📈</li>
+<p>The Chaikin oscillator generates a bullish divergence when it crosses above a baseline. The baseline is called the accumulation-distribution line. A cross above that line indicates that traders are accumulating, which is typically bullish.
+The Chaikin oscillator utilizes two primary buy and sell signals. </p>
+
+<li>Chande Kroll Stop 📈</li>
+<p>The Chande Kroll Stop is an indicator that calculates average stop-loss and take-profit prices for Bitcoin (BTC), Ethereum (ETH), and other altcoins. The indicator can be used on the 1M, 1W, 1D, 6H, and short-term charts. It uses two lines: Red and green to signify the average stop-loss and take-profit limits.</p>
+
+<li>Chande Momentum Oscillator 📈</li>
+<p>The Chande momentum oscillator is a technical momentum indicator introduced by Tushar Chande in his 1994 book The New Technical Trader. The formula calculates the difference between the sum of recent gains and the sum of recent losses and then divides the result by the sum of all price movements over the same period.</p>
+
+<li>Chop Zone 📈</li>
+<p>The Chop Zone indicator is a technical indicator that confirms trendiness or sideways movement in the price of Bitcoin (BTC). Crypto can only go three ways: Up, down, and sideways. Up and down are “trending” movements and sideways is a “choppy” movement. The Chop Zone indicator visually highlights when the price goes sideways.</p>
+
+<li>Choppiness Index 📈</li>
+<p>The Choppiness Index is a volatility indicator developed by Australian commodity trader Bill Dreiss to indicate whether a market is trending or ranging. Values range between 0 and 100, with low values indicating a strong trend and high values signaling consolidation.</p>
+
+<li>Commodity Channel Index 📈</li>
+<p>The Commodity Channel Index​ (CCI) is a momentum-based oscillator used to help determine when an investment vehicle is reaching a condition of being overbought or oversold.
+Developed by Donald Lambert, this technical indicator assesses price trend direction and strength, allowing traders to determine if they want to enter or exit a trade, refrain from taking a trade, or add to an existing position. In this way, the indicator can be used to provide trade signals when it acts in a certain way.</p>
+
+<li>Connors RSI 📈</li>
+<p>Connors RSI (CRSI) is a technical analysis indicator created by Larry Connors that is actually a composite of three separate components. The Relative Strength Index (RSI), developed by J. Welles Wilder, plays an integral role in Connors RSI. In fact, Wilder's RSI is used in two of the indicator's three components. The three components; The RSI, UpDown Length, and Rate-of-Change, combine to form a momentum oscillator. Connors RSI outputs a value between 0 and 100, which is then used to identify short-term overbought and oversold conditions.</p>
+
+<li>Coppock Curve 📈</li>
+<p>The Coppock Curve is a long-term price momentum indicator used primarily to recognize major downturns and upturns in a stock market index. It is calculated as a 10-month weighted moving average of the sum of the 14-month rate of change and the 11-month rate of change for the index. It is also known as the "Coppock Guide."</p>
+
+<li>Cumulative Volume Index</li>
+<p>The cumulative volume index, or CVI, is a momentum indicator that gauges the movement of funds into and out of the entire stock market by computing the difference between advancing and declining stocks as a running total.</p>
+
+
+
+
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
 
