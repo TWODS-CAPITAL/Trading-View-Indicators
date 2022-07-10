@@ -125,6 +125,9 @@ Developed by Donald Lambert, this technical indicator assesses price trend direc
 <li>Envelope 📈</li>
 <p>The Envelopes indicator is a tool that attempts to identify the upper and lower bands of a trading range. It does this by plotting two moving average envelopes on a price chart, one shifted up to a certain distance above the price and the other shifted below.</p>
 
+<li>Fisher Transform 📈</li>
+<p>The Fisher Transform is a technical indicator created by John F. Ehlers that converts prices into a Gaussian normal distribution.1 The indicator highlights when prices have moved to an extreme, based on recent prices. This may help in spotting turning points in the price of an asset. It also helps show the trend and isolate the price waves within a trend.</p>
+
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
 
