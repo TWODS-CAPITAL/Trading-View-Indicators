@@ -128,6 +128,13 @@ Developed by Donald Lambert, this technical indicator assesses price trend direc
 <li>Fisher Transform 📈</li>
 <p>The Fisher Transform is a technical indicator created by John F. Ehlers that converts prices into a Gaussian normal distribution.1 The indicator highlights when prices have moved to an extreme, based on recent prices. This may help in spotting turning points in the price of an asset. It also helps show the trend and isolate the price waves within a trend.</p>
 
+<li>Historical Volatility 📈</li>
+<p>Historical volatility (HV) is a statistical measure of the dispersion of returns for a given security or market index over a given period of time. Generally, this measure is calculated by determining the average deviation from the average price of a financial instrument in the given time period.</p>
+
+<li>Hull Moving Average 📈</li>
+<p>The Hull Moving Average (HMA), developed by Alan Hull, is an extremely fast and smooth moving average. In fact, the HMA almost eliminates lag altogether and manages to improve smoothing at the same time.
+</p>
+
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
 
