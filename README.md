@@ -115,7 +115,15 @@ Developed by Donald Lambert, this technical indicator assesses price trend direc
 <li>Double EMA 📈</li>
 <p>The double exponential moving average (DEMA) is a technical indicator that was devised to reduce the lag in the results produced by a traditional moving average. Technical traders use it to lessen the amount of "noise" that can distort the movements on a price chart.</p>
 
+<li>Ease of Movement 📈</li>
+<p>The Ease of Movement indicator shows the relationship between price and volume, and it's often used to assess the strength of an underlying trend. Ease of Movement calculates how easily a price can move up or down.
+</p>
 
+<li>Elders Force Index 📈</li>
+<p>The Elder Force Index indicator is used to measure the power driving a movement in the price. It tries to highlight potential price reversals and corrections by analyzing the direction, length, and volume driving the price movement.</p>
+
+<li>Envelope 📈</li>
+<p>The Envelopes indicator is a tool that attempts to identify the upper and lower bands of a trading range. It does this by plotting two moving average envelopes on a price chart, one shifted up to a certain distance above the price and the other shifted below.</p>
 
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
