@@ -132,8 +132,12 @@ Developed by Donald Lambert, this technical indicator assesses price trend direc
 <p>Historical volatility (HV) is a statistical measure of the dispersion of returns for a given security or market index over a given period of time. Generally, this measure is calculated by determining the average deviation from the average price of a financial instrument in the given time period.</p>
 
 <li>Hull Moving Average 📈</li>
-<p>The Hull Moving Average (HMA), developed by Alan Hull, is an extremely fast and smooth moving average. In fact, the HMA almost eliminates lag altogether and manages to improve smoothing at the same time.
-</p>
+<p>The Hull Moving Average (HMA), developed by Alan Hull, is an extremely fast and smooth moving average. In fact, the HMA almost eliminates lag altogether and manages to improve smoothing at the same time.</p>
+
+<li>Ichimoku Cloud 📈</li>
+<p>The Ichimoku Cloud is a type of chart used in technical analysis to display support and resistance, momentum, and trend in one view. TenkanSen and KijunSen are similar to moving averages and analyzed in relationship to one another.</p>
+
+
 
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
