@@ -159,7 +159,7 @@ The Keltner channel uses the average-true range (ATR) or volatility, with breaks
 <li>Mass Index 📈</li>
 <p>The mass index is an indicator, developed by Donald Dorsey, used in technical analysis to predict trend reversals. It is based on the notion that there is a tendency for reversal when the price range widens, and therefore compares previous trading ranges (highs minus lows).</p>
 
-<li>Mc Ginley Dynamic 📈<li>
+<li>Mc Ginley Dynamic 📈</li>
 <p>The McGinley Dynamic indicator is a type of moving average that was designed to track the market better than existing moving average indicators. It is a technical indicator that improves upon moving average lines by adjusting for shifts in market speed. John R. McGinley, a market technician, is the inventor of the eponymous indicator.</p>
 
 <li>Median 📈</li>
