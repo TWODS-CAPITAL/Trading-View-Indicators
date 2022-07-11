@@ -137,7 +137,21 @@ Developed by Donald Lambert, this technical indicator assesses price trend direc
 <li>Ichimoku Cloud 📈</li>
 <p>The Ichimoku Cloud is a type of chart used in technical analysis to display support and resistance, momentum, and trend in one view. TenkanSen and KijunSen are similar to moving averages and analyzed in relationship to one another.</p>
 
+<li>Keltners Channels 📈</li>
+<p>Keltner Channels are volatility-based bands that are placed on either side of an asset's price and can aid in determining the direction of a trend.
+The Keltner channel uses the average-true range (ATR) or volatility, with breaks above or below the top and bottom barriers signaling a continuation.</p>
 
+<li>Klinger Oscillator 📈</li>
+<p>The Klinger oscillator was developed by Stephen Klinger to determine the long-term trend of money flow while remaining sensitive enough to detect short-term fluctuations. The indicator compares the volume flowing through securities with the security's price movements and then converts the result into an oscillator.</p>
+
+<li>Know Sure thing 📈</li>
+<p>The Know Sure Thing (KST) is a momentum oscillator intended to interpret rate-of-change price data. Trading signals are generated when the KST crosses over the signal line, but traders also look for overbought or oversold conditions.</p>
+
+<li>Least Squares Moving Average 📈</li>
+<p>The least square moving average (LSMA) calculates the least squares regression line for the preceding time periods, thus leading to forward projections from the current period. Accordingly, the indicator has the ability to identify what could happen if the regression line continued.</p>
+
+<li>Linear Regression Channel 📈</li>
+<p>The Linear Regression Channel is a three-line technical indicator used to analyze the upper and lower limits of an existing trend. Linear regression is a statistical tool used to predict the future from past data. It is used to determine when prices may be overextended.</p>
 
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
