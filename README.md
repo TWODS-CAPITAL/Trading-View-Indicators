@@ -153,6 +153,18 @@ The Keltner channel uses the average-true range (ATR) or volatility, with breaks
 <li>Linear Regression Channel 📈</li>
 <p>The Linear Regression Channel is a three-line technical indicator used to analyze the upper and lower limits of an existing trend. Linear regression is a statistical tool used to predict the future from past data. It is used to determine when prices may be overextended.</p>
 
+<li>MA Cross 📈</li>
+<p>In the statistics of time series, and in particular the stock market technical analysis, a moving-average crossover occurs when, on plotting two moving averages each based on different degrees of smoothing, the traces of these moving averages cross. It does not predict future direction but shows trends.</p>
+
+<li>Mass Index 📈</li>
+<p>The mass index is an indicator, developed by Donald Dorsey, used in technical analysis to predict trend reversals. It is based on the notion that there is a tendency for reversal when the price range widens, and therefore compares previous trading ranges (highs minus lows).</p>
+
+<li>Mc Ginley Dynamic 📈<li>
+<p>The McGinley Dynamic indicator is a type of moving average that was designed to track the market better than existing moving average indicators. It is a technical indicator that improves upon moving average lines by adjusting for shifts in market speed. John R. McGinley, a market technician, is the inventor of the eponymous indicator.</p>
+
+<li>Median 📈</li>
+<p>The Median Price indicator is simply the midpoint of each day's price. The Typical Price and Weighted Close are similar indicators. The Median Price indicator provides a simple, single-line chart of the day's "average price." This average price is useful when you want a simpler view of prices.</p>
+
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
 
