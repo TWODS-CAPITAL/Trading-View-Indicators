@@ -200,6 +200,20 @@ Unlike conventional oscillators such as the Relative Strength Index (RSI), the M
 <li>Open Interest 📈</li>
 <p>Open interest refers to the total number of outstanding derivative contracts that have not been settled. For each buyer of a futures contract there must be a seller. From the time the buyer or seller opens the contract until the counter-party closes it, that contract is considered 'open'.</p>
 
+<li>Parabolic SAR 📈</li>
+<p>The parabolic SAR is a technical indicator used to determine the price direction of an asset, as well as draw attention to when the price direction is changing. Sometimes known as the "stop and reversal system," the parabolic SAR was developed by J. Welles Wilder Jr., creator of the relative strength index (RSI).</p>
+
+<li>Pivot Points (High/Low) 📈</li>
+<p>Pivot Points (High/Low), also known as Bar Count Reversals, are used to anticipate potential price reversals. Pivot Point Highs are determined by the number of bars with lower highs on either side of a Pivot Point High.</p>
+
+<li>Pivot Points Standard 📈</li>
+<p>Pivot Points Standard is a technical indicator that is used to determine the levels at which price may face support or resistance. The Pivot Points indicator consists of a pivot point (PP) level and several support (S) and resistance (R) levels.
+</p>
+
+<li>Price Oscillator 📈</li>
+<p>The percentage price oscillator (PPO) is a technical momentum indicator that shows the relationship between two moving averages in percentage terms. The moving averages are a 26-period and 12-period exponential moving average (EMA).</p>
+
+
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
 
