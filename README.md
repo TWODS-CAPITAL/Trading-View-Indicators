@@ -165,6 +165,32 @@ The Keltner channel uses the average-true range (ATR) or volatility, with breaks
 <li>Median 📈</li>
 <p>The Median Price indicator is simply the midpoint of each day's price. The Typical Price and Weighted Close are similar indicators. The Median Price indicator provides a simple, single-line chart of the day's "average price." This average price is useful when you want a simpler view of prices.</p>
 
+<li>Momentum 📈</li>
+<p>Momentrum indicators are technical analysis tools used to determine the strength or weakness of a stock's price. Momentum measures the rate of the rise or fall of stock prices. Common momentum indicators include the relative strength index (RSI) and moving average convergence divergence (MACD).</p>
+
+<li>Money Flow Index 📈</li>
+<p>The Money Flow Index (MFI) is a technical oscillator that uses price and volume data for identifying overbought or oversold signals in an asset. It can also be used to spot divergences which warn of a trend change in price. The oscillator moves between 0 and 100.
+Unlike conventional oscillators such as the Relative Strength Index (RSI), the Money Flow Index incorporates both price and volume data, as opposed to just price. For this reason, some analysts call MFI the volume-weighted RSI.
+</p>
+
+<li>Moving Average Convergence Divergence (MACD) 📈</li>
+<p>Moving average convergence divergence (MACD) is a trend-following momentum indicator that shows the relationship between two moving averages of a security's price. The MACD is calculated by subtracting the 26-period exponential moving average (EMA) from the 12-period EMA.</p>
+
+<li>Moving Average Exponential 📈</li>
+<p>The exponential moving average (EMA) is a technical chart indicator that tracks the price of an investment (like a stock or commodity) over time. The EMA is a type of weighted moving average (WMA) that gives more weighting or importance to recent price data.</p>
+
+<li>Moving Average Ribbon 📈</li>
+<p>A moving average ribbon is a connected series of sequential moving averages. The trader determines how many MAs are used to create the ribbon, as well as the lookback periods (length) of each ribbon. When the price is above the MA ribbon, and the MAs are angled upwards, it helps confirm a rising price.</p>
+
+<li>Moving Average Weighted 📈</li>
+<p>A Weighted Moving Average puts more weight on recent data and less on past data. This is done by multiplying each bar's price by a weighting factor. Because of its unique calculation, WMA will follow prices more closely than a corresponding Simple Moving Average.</p>
+
+<li>Moving Average 📈</li>
+<p>A moving average is a statistic that captures the average change in a data series over time. In finance, moving averages are often used by technical analysts to keep track of prices trends for specific securities.</p>
+
+<li>Multi-Time Period Charts 📈</li>
+<p>In specializing as a day trader, momentum trader, breakout trader or event risk trader, among other styles, many market participants lose sight of the larger trend, miss clear levels of support and resistance and overlook high probability entry and stop levels. In this article, we will describe what multiple time frame analysis is and how to choose the various periods and how to put it all together.</p>
+
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
 
