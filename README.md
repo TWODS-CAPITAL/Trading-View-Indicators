@@ -191,6 +191,15 @@ Unlike conventional oscillators such as the Relative Strength Index (RSI), the M
 <li>Multi-Time Period Charts 📈</li>
 <p>In specializing as a day trader, momentum trader, breakout trader or event risk trader, among other styles, many market participants lose sight of the larger trend, miss clear levels of support and resistance and overlook high probability entry and stop levels. In this article, we will describe what multiple time frame analysis is and how to choose the various periods and how to put it all together.</p>
 
+<li>Net Volume 📈</li>
+<p>Net volume is a technical indicator calculated by subtracting a security's uptick volume by its downtick volume over a specified period of time. Unlike standard volume, the indicator differentiates whether the market sentiment is leaning bullish or bearish.</p>
+
+<li>On Balance Volume 📈</li>
+<p>On Balance Volume (OBV) measures buying and selling pressure as a cumulative indicator that adds volume on up days and subtracts volume on down days. When the security closes higher than the previous close, all of the day's volume is considered up-volume.</p>
+
+<li>Open Interest 📈</li>
+<p>Open interest refers to the total number of outstanding derivative contracts that have not been settled. For each buyer of a futures contract there must be a seller. From the time the buyer or seller opens the contract until the counter-party closes it, that contract is considered 'open'.</p>
+
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
 
