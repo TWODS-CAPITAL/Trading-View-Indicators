@@ -213,6 +213,19 @@ Unlike conventional oscillators such as the Relative Strength Index (RSI), the M
 <li>Price Oscillator 📈</li>
 <p>The percentage price oscillator (PPO) is a technical momentum indicator that shows the relationship between two moving averages in percentage terms. The moving averages are a 26-period and 12-period exponential moving average (EMA).</p>
 
+<li>Rate of Change 📈</li>
+<p>Rate of change is used to mathematically describe the percentage change in value over a defined period of time, and it represents the momentum of a variable. The calculation for ROC is simple in that it takes the current value of a stock or index and divides it by the value from an earlier period.</p>
+
+<li>Relative Strength Index 📈</li>
+<p>The Relative Strength Index (RSI), developed by J. Welles Wilder, is a momentum oscillator that measures the speed and change of price movements. The RSI oscillates between zero and 100. Traditionally the RSI is considered overbought when above 70 and oversold when below 30.</p>
+
+<li>Relative Vigor Index 📈</li>
+<p>The Relative Vigor Index (RVI) is an oscillator based on the concept that prices tend to close higher than they open in up trends and close lower than they open in down trends. Basically, it is an oscillator that is in phase with the cycle of the underlying's price.</p>
+
+<li>Relative Volatility Index 📈</li>
+<p>Relative Volatility Index (RVI) Indicator is a momentum oscillator, which measures both the speed as well as the rise or fall of price movements of a stock in terms of complete stock trading. Relative Volatility Index (RVI) Indicator is one of the top Technical Analysis Indicator.</p>
+
+
 
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
