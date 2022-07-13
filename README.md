@@ -237,8 +237,22 @@ Unlike conventional oscillators such as the Relative Strength Index (RSI), the M
 <li>Stochastic 📈</li>
 <p>The stochastic oscillator, also known as stochastic indicator, is a popular trading indicator​ that is useful for predicting trend reversals. It also focuses on price momentum and can be used to identify overbought and oversold levels in shares, indices, currencies and many other investment assets.</p>
 
-<li>SuperTrend 📈<li>
+<li>SuperTrend 📈</li>
 <p>A 'Supertrend' indicator is one, which can give you precise buy or sell signal in a trending market. As the name suggests, 'Supertrend' is a trend-following indicator just like moving averages and MACD (moving average convergence divergence). It is plotted on prices and their placement indicates the current trend.</p>
+
+<li>Technical Ratings 📈</li>
+<p>Technical indicators are heuristic or pattern-based signals produced by the price, volume, and/or open interest of a security or contract used by traders who follow technical analysis. By analyzing historical data, technical analysts use indicators to predict future price movements.</p>
+
+<li>Triple EMA 📈</li>
+<p>The triple exponential moving average (TEMA) was designed to smooth price fluctuations, thereby making it easier to identify trends without the lag associated with traditional moving averages (MA). It does this by taking multiple exponential moving averages (EMA) of the original EMA and subtracting out some of the lag.</p>
+
+<li>TRIX 📈</li>
+<p>Trix is a technical analysis oscillator developed in the 1980s by Jack Hutson, editor of Technical Analysis of Stocks and Commodities magazine. It shows the slope of a triple-smoothed exponential moving average. The name Trix is from "triple exponential."</p>
+
+<li>True Strength Indicator 📈</li>
+<p>The true strength index (TSI) is a technical momentum oscillator used to identify trends and reversals. The indicator may be useful for determining overbought and oversold conditions, indicating potential trend direction changes via centerline or signal line crossovers, and warning of trend weakness through divergence.</p>
+
+<i>Readme still ind development Stages! </i>
 
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
