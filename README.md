@@ -252,7 +252,7 @@ Unlike conventional oscillators such as the Relative Strength Index (RSI), the M
 <li>True Strength Indicator 📈</li>
 <p>The true strength index (TSI) is a technical momentum oscillator used to identify trends and reversals. The indicator may be useful for determining overbought and oversold conditions, indicating potential trend direction changes via centerline or signal line crossovers, and warning of trend weakness through divergence.</p>
 
-<i>Readme still ind development Stages! </i>
+<i>Readme still in development Stages! </i>
 
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
