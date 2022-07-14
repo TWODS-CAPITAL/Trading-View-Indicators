@@ -288,6 +288,9 @@ Fractals are a natural phenomenon of reversals within reversals. In order for a 
 <p>Woodies CCI is a Commodity Channel Index based system developed by Ken Woods. The main principle of this system is that the price moves in the direction of CCI.
 Zero line is the main indicator of support/resistance. If CCI crosses this level and does not go back for at least six bars, it might indicate trend existence; CCI crossing above zero line signifies the uptrend, if it crosses below, downtrend. Zero line is also merged with LSMA indicator which shows if the price is below or above LSMA (a moving average designed for Woodies CCI). Red areas of the indicator signify that the price is below LSMA; green areas, above.</p>
 
+<li>Zig-Zag 📈</li>
+<p>The zig zag indicator is a basic tool that analysts use to find out when a security's trend is reversing. By determining the support and resistance areas, it helps to identify significant changes in price while filtering out short-term fluctuations, thus eliminating the noise of everyday market conditions.</p>
+
 
 <i>Readme still in development Stages! </i>
 
