@@ -252,6 +252,13 @@ Unlike conventional oscillators such as the Relative Strength Index (RSI), the M
 <li>True Strength Indicator 📈</li>
 <p>The true strength index (TSI) is a technical momentum oscillator used to identify trends and reversals. The indicator may be useful for determining overbought and oversold conditions, indicating potential trend direction changes via centerline or signal line crossovers, and warning of trend weakness through divergence.</p>
 
+<li>Ultimate Oscillator 📈</li>
+<p>The ultimate oscillator is a theoretical concept in finance developed by Larry Williams as a way to account for the problems experienced in most oscillators when used over different lengths of time.</p>
+
+<li>Up - Down Volume 📈</li>
+<p>The Up/Down Volume ratio compares the representation of buyers vs. sellers over a period of time. The assumption is that if a stock closes UP for the day, the attributable volume was induced by buying pressure and thus the stock is under accumulation. Conversely, if a stock closes DOWN for the day, the trading activity is deemed to be selling induced, a sign of distribution.</p>
+
+
 <i>Readme still in development Stages! </i>
 
 </ol>
