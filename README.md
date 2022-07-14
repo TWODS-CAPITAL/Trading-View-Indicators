@@ -292,7 +292,6 @@ Zero line is the main indicator of support/resistance. If CCI crosses this level
 <p>The zig zag indicator is a basic tool that analysts use to find out when a security's trend is reversing. By determining the support and resistance areas, it helps to identify significant changes in price while filtering out short-term fluctuations, thus eliminating the noise of everyday market conditions.</p>
 
 
-<i>Readme still in development Stages! </i>
 
 </ol>
 Disclaimer - <i>All Issues termed as enhancements are features yet to be added.</i>
