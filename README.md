@@ -258,6 +258,22 @@ Unlike conventional oscillators such as the Relative Strength Index (RSI), the M
 <li>Up - Down Volume 📈</li>
 <p>The Up/Down Volume ratio compares the representation of buyers vs. sellers over a period of time. The assumption is that if a stock closes UP for the day, the attributable volume was induced by buying pressure and thus the stock is under accumulation. Conversely, if a stock closes DOWN for the day, the trading activity is deemed to be selling induced, a sign of distribution.</p>
 
+<li>Volatility Stop 📈</li>
+<p>A volatility stop takes a multiple of the ATR, adds or subtracts it from the close, and places the stop at this price. The stop can only move higher during uptrends, lower during downtrends, or sideways. Once the trailing stop has been established, it should never be moved to a worse position.</p>
+
+<li>Volume Oscillator 📈</li>
+<p>The Volume Oscillator (VO) works on the technical premise that it is not the actual level of volume, but the change in volume relative to the recent past that has more technical significance. The Volume Oscillator displays the difference between two moving averages of a security's volume expressed as a percentage.</p>
+
+<li>Volume Weighted Average Price 📈</li>
+<p>The volume-weighted average price (VWAP) is a measurement that shows the average price of a security, adjusted for its volume. It is calculated during a specific trading session by taking the total dollar value of trading in the security and dividing it by the volume of trades.</p>
+
+<li>Volume Weighted Moving Average 📈</li>
+<p>A Volume Weighted Moving Average is a moving average where more weight is given to bars with heavy volume than with light volume. This the value of the moving average will be closer to where most trading actually happened than it otherwise would be without being volume weighted.</p>
+
+<li>Vortex Indicator 📈</li>
+<p>A vortex indicator (VI) is an indicator composed of two lines - an uptrend line (VI+) and a downtrend line (VI-). These lines are typically colored green and red respectively. A vortex indicator is used to spot trend reversals and confirm current trends.
+</p>
+
 
 <i>Readme still in development Stages! </i>
 
