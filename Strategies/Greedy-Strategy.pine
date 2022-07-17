@@ -1,0 +1,29 @@
+//@version=5
+strategy("Greedy Strategy", pyramiding = 100, calc_on_order_fills=false, overlay=true)
+tp = input(10)
+sl = input(10)
+maxidf = input(title="Max Intraday Filled Orders", defval=5)
+strategy.risk.max_intraday_filled_orders(maxidf)
+upGap = open > high[1]
+dnGap = open < low[1]
+dn = strategy.position_size < 0 and open > close
+up = strategy.position_size > 0 and open < close
+strategy.entry("GapUp", strategy.long, stop = high[1], when = upGap)
+strategy.entry("Dn", strategy.short, stop = close,  when =  dn)
+strategy.entry("GapDn", strategy.short, stop = low[1], when = dnGap)
+strategy.entry("Up", strategy.long, stop = close,  when =  up)
+strategy.cancel("GapUp", not upGap)
+strategy.cancel("GapDn", not dnGap)
+strategy.cancel("Up", not up)
+strategy.cancel("Dn", not dn)
+XQty = strategy.position_size < 0 ? -strategy.position_size : strategy.position_size
+dir = strategy.position_size < 0 ? -1 : 1
+lmP = strategy.position_avg_price + dir*tp*syminfo.mintick
+slP = strategy.position_avg_price - dir*sl*syminfo.mintick
+float nav = na
+revCond = strategy.position_size > 0 ? dnGap : (strategy.position_size < 0 ? upGap : false),
+strategy.order("TP", strategy.position_size < 0 ? strategy.long : strategy.short, XQty, lmP, nav, "TPSL",  strategy.oca.reduce, "TPSL", when=  not revCond and XQty > 0)
+strategy.order("SL", strategy.position_size < 0 ? strategy.long : strategy.short, XQty, nav, slP, "TPSL",  strategy.oca.reduce, "TPSL", when= not revCond and XQty > 0)
+strategy.cancel("TP", XQty == 0 or revCond)
+strategy.cancel("SL", XQty == 0 or revCond)
+//plot(strategy.equity, title="equity", color=color.red, linewidth=2, style=plot.style_areabr)
