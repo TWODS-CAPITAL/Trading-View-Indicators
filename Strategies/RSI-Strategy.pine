@@ -1,0 +1,15 @@
+//@version=5
+strategy("RSI Strategy", overlay=true)
+length = input( 14 )
+overSold = input( 30 )
+overBought = input( 70 )
+price = close
+vrsi = ta.rsi(price, length)
+co = ta.crossover(vrsi, overSold)
+cu = ta.crossunder(vrsi, overBought)
+if (not na(vrsi))
+	if (co)
+		strategy.entry("RsiLE", strategy.long, comment="RsiLE")
+	if (cu)
+		strategy.entry("RsiSE", strategy.short, comment="RsiSE")
+//plot(strategy.equity, title="equity", color=color.red, linewidth=2, style=plot.style_areabr)
