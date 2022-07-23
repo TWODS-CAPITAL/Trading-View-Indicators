@@ -1,0 +1,307 @@
+//@version=5
+strategy(title="Technical Ratings Strategy", shorttitle="Technicals Strategy", default_qty_type = strategy.percent_of_equity, default_qty_value = 5, overlay=true)
+res = input.timeframe("", title="Indicator Timeframe")
+ratingSignal = input.string(defval = "All", title = "Rating is based on", options = ["MAs", "Oscillators", "All"])
+// Awesome Oscillator
+AO() =>
+    ta.sma(hl2, 5) - ta.sma(hl2, 34)
+// Stochastic RSI
+StochRSI() =>
+    rsi1 = ta.rsi(close, 14)
+    K = ta.sma(ta.stoch(rsi1, rsi1, rsi1, 14), 3)
+    D = ta.sma(K, 3)
+    [K, D]
+// Ultimate Oscillator
+tl() => close[1] < low ? close[1]: low
+uo(ShortLen, MiddlLen, LongLen) =>
+    Value1 = math.sum(ta.tr, ShortLen)
+    Value2 = math.sum(ta.tr, MiddlLen)
+    Value3 = math.sum(ta.tr, LongLen)
+    Value4 = math.sum(close - tl(), ShortLen)
+    Value5 = math.sum(close - tl(), MiddlLen)
+    Value6 = math.sum(close - tl(), LongLen)
+    float UO = na
+    if Value1 != 0 and Value2 != 0 and Value3 != 0
+        var0 = LongLen / ShortLen
+        var1 = LongLen / MiddlLen
+        Value7 = (Value4 / Value1) * (var0)
+        Value8 = (Value5 / Value2) * (var1)
+        Value9 = (Value6 / Value3)
+        UO := (Value7 + Value8 + Value9) / (var0 + var1 + 1)
+    UO
+// Ichimoku Cloud
+donchian(len) => math.avg(ta.lowest(len), ta.highest(len))
+ichimoku_cloud() =>
+    conversionLine = donchian(9)
+    baseLine = donchian(26)
+    leadLine1 = math.avg(conversionLine, baseLine)
+    leadLine2 = donchian(52)
+    [conversionLine, baseLine, leadLine1, leadLine2]
+
+calcRatingMA(ma, src) => na(ma) or na(src) ? na : (ma == src ? 0 : ( ma < src ? 1 : -1 ))
+calcRating(buy, sell) => buy ? 1 : ( sell ? -1 : 0 )
+calcRatingAll() =>
+    //============== MA =================
+    SMA10 = ta.sma(close, 10)
+    SMA20 = ta.sma(close, 20)
+    SMA30 = ta.sma(close, 30)
+    SMA50 = ta.sma(close, 50)
+    SMA100 = ta.sma(close, 100)
+    SMA200 = ta.sma(close, 200)
+
+    EMA10 = ta.ema(close, 10)
+    EMA20 = ta.ema(close, 20)
+    EMA30 = ta.ema(close, 30)
+    EMA50 = ta.ema(close, 50)
+    EMA100 = ta.ema(close, 100)
+    EMA200 = ta.ema(close, 200)
+
+    HullMA9 = ta.hma(close, 9)
+
+    // Volume Weighted Moving Average (VWMA)
+    VWMA = ta.vwma(close, 20)
+
+    [IC_CLine, IC_BLine, IC_Lead1, IC_Lead2] = ichimoku_cloud()
+
+    // ======= Other =============
+    // Relative Strength Index, RSI
+    RSI = ta.rsi(close,14)
+
+    // Stochastic
+    lengthStoch = 14
+    smoothKStoch = 3
+    smoothDStoch = 3
+    kStoch = ta.sma(ta.stoch(close, high, low, lengthStoch), smoothKStoch)
+    dStoch = ta.sma(kStoch, smoothDStoch)
+
+    // Commodity Channel Index, CCI
+    CCI = ta.cci(close, 20)
+
+    // Average Directional Index
+    float adxValue = na, float adxPlus = na, float adxMinus = na
+    [P, M, V] = ta.dmi(14, 14)
+    adxValue := V
+    adxPlus := P
+    adxMinus := M
+    // Awesome Oscillator
+    ao = AO()
+
+    // Momentum
+    Mom = ta.mom(close, 10)
+    // Moving Average Convergence/Divergence, MACD
+    [macdMACD, signalMACD, _] = ta.macd(close, 12, 26, 9)
+    // Stochastic RSI
+    [Stoch_RSI_K, Stoch_RSI_D] = StochRSI()
+    // Williams Percent Range
+    WR = ta.wpr(14)
+
+    // Bull / Bear Power
+    BullPower = high - ta.ema(close, 13)
+    BearPower = low - ta.ema(close, 13)
+    // Ultimate Oscillator
+    UO = uo(7,14,28)
+    if not na(UO)
+        UO := UO * 100
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    PriceAvg = ta.ema(close, 50)
+    DownTrend = close < PriceAvg
+    UpTrend = close > PriceAvg
+    // calculate trading recommendation based on SMA/EMA
+    float ratingMA = 0
+    float ratingMAC = 0
+
+    float ratingSMA10 = na
+    if not na(SMA10)
+        ratingSMA10 := calcRatingMA(SMA10, close)
+        ratingMA := ratingMA + ratingSMA10
+        ratingMAC := ratingMAC + 1
+    float ratingSMA20 = na
+    if not na(SMA20)
+        ratingSMA20 := calcRatingMA(SMA20, close)
+        ratingMA := ratingMA + ratingSMA20
+        ratingMAC := ratingMAC + 1
+    float ratingSMA30 = na
+    if not na(SMA30)
+        ratingSMA30 := calcRatingMA(SMA30, close)
+        ratingMA := ratingMA + ratingSMA30
+        ratingMAC := ratingMAC + 1
+    float ratingSMA50 = na
+    if not na(SMA50)
+        ratingSMA50 := calcRatingMA(SMA50, close)
+        ratingMA := ratingMA + ratingSMA50
+        ratingMAC := ratingMAC + 1
+    float ratingSMA100 = na
+    if not na(SMA100)
+        ratingSMA100 := calcRatingMA(SMA100, close)
+        ratingMA := ratingMA + ratingSMA100
+        ratingMAC := ratingMAC + 1
+    float ratingSMA200 = na
+    if not na(SMA200)
+        ratingSMA200 := calcRatingMA(SMA200, close)
+        ratingMA := ratingMA + ratingSMA200
+        ratingMAC := ratingMAC + 1
+
+    float ratingEMA10 = na
+    if not na(EMA10)
+        ratingEMA10 := calcRatingMA(EMA10, close)
+        ratingMA := ratingMA + ratingEMA10
+        ratingMAC := ratingMAC + 1
+    float ratingEMA20 = na
+    if not na(EMA20)
+        ratingEMA20 := calcRatingMA(EMA20, close)
+        ratingMA := ratingMA + ratingEMA20
+        ratingMAC := ratingMAC + 1
+    float ratingEMA30 = na
+    if not na(EMA30)
+        ratingEMA30 := calcRatingMA(EMA30, close)
+        ratingMA := ratingMA + ratingEMA30
+        ratingMAC := ratingMAC + 1
+    float ratingEMA50 = na
+    if not na(EMA50)
+        ratingEMA50 := calcRatingMA(EMA50, close)
+        ratingMA := ratingMA + ratingEMA50
+        ratingMAC := ratingMAC + 1
+    float ratingEMA100 = na
+    if not na(EMA100)
+        ratingEMA100 := calcRatingMA(EMA100, close)
+        ratingMA := ratingMA + ratingEMA100
+        ratingMAC := ratingMAC + 1
+    float ratingEMA200 = na
+    if not na(EMA200)
+        ratingEMA200 := calcRatingMA(EMA200, close)
+        ratingMA := ratingMA + ratingEMA200
+        ratingMAC := ratingMAC + 1
+
+    float ratingHMA = na
+    if not na(HullMA9)
+        ratingHMA := calcRatingMA(HullMA9, close)
+        ratingMA := ratingMA + ratingHMA
+        ratingMAC := ratingMAC + 1
+
+    float ratingVWMA = na
+    if not na(VWMA)
+        ratingVWMA := calcRatingMA(VWMA, close)
+        ratingMA := ratingMA + ratingVWMA
+        ratingMAC := ratingMAC + 1
+
+    float ratingIC = na
+    if not (na(IC_Lead1) or na(IC_Lead2) or na(close) or na(close[1]) or na(IC_BLine) or na(IC_CLine))
+        ratingIC := calcRating(
+         IC_Lead1 > IC_Lead2 and close > IC_Lead1 and close < IC_BLine and close[1] < IC_CLine and close > IC_CLine,
+         IC_Lead2 > IC_Lead1 and close < IC_Lead2 and close > IC_BLine and close[1] > IC_CLine and close < IC_CLine)
+    if not na(ratingIC)
+        ratingMA := ratingMA + ratingIC
+        ratingMAC := ratingMAC + 1
+
+    ratingMA := ratingMAC > 0 ? ratingMA / ratingMAC : na
+
+    float ratingOther = 0
+    float ratingOtherC = 0
+
+    float ratingRSI = na
+    if not(na(RSI) or na(RSI[1]))
+        ratingRSI := calcRating(RSI < 30 and RSI[1] < RSI, RSI > 70 and RSI[1] > RSI)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingRSI
+
+    float ratingStoch = na
+    if not(na(kStoch) or na(dStoch) or na(kStoch[1]) or na(dStoch[1]))
+        ratingStoch := calcRating(kStoch < 20 and dStoch < 20 and kStoch > dStoch and kStoch[1] < dStoch[1], kStoch > 80 and dStoch > 80 and kStoch < dStoch and kStoch[1] > dStoch[1])
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingStoch
+
+    float ratingCCI = na
+    if not(na(CCI) or na(CCI[1]))
+        ratingCCI := calcRating(CCI < -100 and CCI > CCI[1], CCI > 100 and CCI < CCI[1])
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingCCI
+
+    float ratingADX = na
+    if not(na(adxValue) or na(adxPlus[1]) or na(adxMinus[1]) or na(adxPlus) or na(adxMinus))
+        ratingADX := calcRating(adxValue > 20 and adxPlus[1] < adxMinus[1] and adxPlus > adxMinus, adxValue > 20 and adxPlus[1] > adxMinus[1] and adxPlus < adxMinus)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingADX
+
+    float ratingAO = na
+    if not(na(ao) or na(ao[1]))
+        ratingAO := calcRating(ta.crossover(ao,0) or (ao > 0 and ao[1] > 0 and ao > ao[1] and ao[2] > ao[1]), ta.crossunder(ao,0) or (ao < 0 and ao[1] < 0 and ao < ao[1] and ao[2] < ao[1]))
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingAO
+
+    float ratingMOM = na
+    if not(na(Mom) or na(Mom[1]))
+        ratingMOM := calcRating(Mom > Mom[1], Mom < Mom[1])
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingMOM
+
+    float ratingMACD = na
+    if not(na(macdMACD) or na(signalMACD))
+        ratingMACD := calcRating(macdMACD > signalMACD, macdMACD < signalMACD)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingMACD
+
+    float ratingStoch_RSI = na
+    if not(na(DownTrend) or na(UpTrend) or na(Stoch_RSI_K) or na(Stoch_RSI_D) or na(Stoch_RSI_K[1]) or na(Stoch_RSI_D[1]))
+        ratingStoch_RSI := calcRating(
+         DownTrend and Stoch_RSI_K < 20 and Stoch_RSI_D < 20 and Stoch_RSI_K > Stoch_RSI_D and Stoch_RSI_K[1] < Stoch_RSI_D[1],
+         UpTrend and Stoch_RSI_K > 80 and Stoch_RSI_D > 80 and Stoch_RSI_K < Stoch_RSI_D and Stoch_RSI_K[1] > Stoch_RSI_D[1])
+    if not na(ratingStoch_RSI)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingStoch_RSI
+
+    float ratingWR = na
+    if not(na(WR) or na(WR[1]))
+        ratingWR := calcRating(WR < -80 and WR > WR[1], WR > -20 and WR < WR[1])
+    if not na(ratingWR)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingWR
+
+    float ratingBBPower = na
+    if not(na(UpTrend) or na(DownTrend) or na(BearPower) or na(BearPower[1]) or na(BullPower) or na(BullPower[1]))
+        ratingBBPower := calcRating(
+         UpTrend and BearPower < 0 and BearPower > BearPower[1],
+         DownTrend and BullPower > 0 and BullPower < BullPower[1])
+    if not na(ratingBBPower)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingBBPower
+
+    float ratingUO = na
+    if not(na(UO))
+        ratingUO := calcRating(UO > 70, UO < 30)
+    if not na(ratingUO)
+        ratingOtherC := ratingOtherC + 1
+        ratingOther := ratingOther + ratingUO
+
+    ratingOther := ratingOtherC > 0 ? ratingOther / ratingOtherC : na
+
+    float ratingTotal = 0
+    float ratingTotalC = 0
+    if not na(ratingMA)
+        ratingTotal := ratingTotal + ratingMA
+        ratingTotalC := ratingTotalC + 1
+    if not na(ratingOther)
+        ratingTotal := ratingTotal + ratingOther
+        ratingTotalC := ratingTotalC + 1
+    ratingTotal := ratingTotalC > 0 ? ratingTotal / ratingTotalC : na
+
+    [ratingTotal, ratingOther, ratingMA]
+
+StrongBound = 0.5
+WeakBound = 0.1
+
+getSignal(ratingTotal, ratingOther, ratingMA) =>
+    float _res = ratingTotal
+    if ratingSignal == "MAs"
+        _res := ratingMA
+    if ratingSignal == "Oscillators"
+        _res := ratingOther
+    _res
+[ratingTotal, ratingOther, ratingMA]  = request.security(syminfo.tickerid, res, calcRatingAll())
+tradeSignal = getSignal(ratingTotal, ratingOther, ratingMA)
+
+dynSLpoints(factor) => factor * ta.atr(14) / syminfo.mintick
+
+strategy.entry("long", strategy.long, when = tradeSignal > StrongBound)
+strategy.entry("short", strategy.short, when = tradeSignal < -StrongBound)
+strategy.exit("sl/tp", loss = dynSLpoints(3), trail_points = dynSLpoints(5), trail_offset = dynSLpoints(2))
