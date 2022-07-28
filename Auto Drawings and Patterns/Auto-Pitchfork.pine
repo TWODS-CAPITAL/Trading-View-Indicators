@@ -1,0 +1,257 @@
+
+//@version=5
+indicator("Auto Pitchfork", overlay = true)
+
+depthTooltip = "The minimum number of bars that will be taken into account when calculating the indicator."
+depth = input.int(10, "Depth", minval = 1, tooltip = depthTooltip)
+typeP = input.string("Original", "Type", options = ["Original", "Schiff", "Modified Schiff", "Inside"])
+backgroundTransparency = input.int(85, "Background Transparency", minval = 0, maxval = 100)
+
+isExtended = input.bool(false, "Extend left")
+extendLine = isExtended ? extend.both : extend.right 
+
+medianColor = input(#f44336, "Median line                 ", inline = "ML")
+medianWidth = input.int(1, "", minval = 1, inline = "ML")
+medianStyle = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "ML")
+
+var line lineLast = na
+var int iLast = 0
+var int iPrev = 0
+var float pLast = 0
+var isHighLast = false // otherwise the last pivot is a low pivot
+
+var iPrevPvt = 0
+var pPrevPvt = 0.
+var iLastPvt = 0
+var pLastPvt = 0.
+
+pivots(src, length, isHigh) =>
+    l2 = length * 2
+    p  = nz(src[length])
+    isFound = true
+    for i = 0 to l2
+        if isHigh and src[i] > p
+            isFound := false
+        if not isHigh and src[i] < p
+            isFound := false
+    if isFound
+        [bar_index[length], p]
+    else
+        [int(na), float(na)]
+
+[iH, pH] = pivots(high, depth / 2, true )
+[iL, pL] = pivots(low , depth / 2, false)
+
+pivotFound(isHigh, index, price) =>
+    if isHighLast == isHigh and not na(lineLast) // same direction
+        if isHighLast ? price > pLast : price < pLast
+            line.set_xy2(lineLast, index, price)
+            [lineLast, isHighLast]
+        else
+            [line(na), bool(na)]
+    else // reverse the direction (or create the very first line)
+        id = line.new(iLast, pLast, index, price, color=na)
+        [id, isHigh]
+
+if not na(iH)
+    [id, isHigh] = pivotFound(true, iH, pH)
+    if not na(id)
+        if id != lineLast
+            iPrevPvt := line.get_x1(lineLast)
+            pPrevPvt := line.get_y1(lineLast)
+            iLastPvt := line.get_x2(lineLast)
+            pLastPvt := line.get_y2(lineLast)
+            line.delete(lineLast)
+        lineLast := id
+        isHighLast := isHigh
+        iPrev := iLast
+        iLast := iH
+        pLast := pH
+else
+    if not na(iL)
+        [id, isHigh] = pivotFound(false, iL, pL)
+        if not na(id)
+            if id != lineLast
+                iPrevPvt := line.get_x1(lineLast)
+                pPrevPvt := line.get_y1(lineLast)
+                iLastPvt := line.get_x2(lineLast)
+                pLastPvt := line.get_y2(lineLast)
+                line.delete(lineLast)
+            lineLast := id
+            isHighLast := isHigh
+            iPrev := iLast
+            iLast := iL
+            pLast := pL
+
+iPrev2Pvt = ta.valuewhen(ta.change(iPrevPvt), iPrevPvt, 1)
+pPrev2Pvt = ta.valuewhen(ta.change(pPrevPvt), pPrevPvt, 1)
+
+getMedianData(type) =>
+    var iStartMedian = 0
+    var pStartMedian = 0.
+    var iEndMedian = 0
+    var pEndMedian = 0.
+    
+    iEndMedian := math.floor(math.avg(iPrevPvt, iLastPvt))
+    pEndMedian := math.avg(pPrevPvt, pLastPvt)
+
+    if type == "Original"
+        iStartMedian := iPrev2Pvt
+        pStartMedian := pPrev2Pvt
+        offsetEnd = (iLastPvt - iPrevPvt) % 2 != 0 ? (pStartMedian - pEndMedian) * 0.5 / math.abs(iStartMedian - iEndMedian - 0.5) : 0 // add offset if iEndMedian was rounded (floor) to whole bar_index
+        pEndMedian += offsetEnd
+
+    else if type == "Schiff"
+        iStartMedian := iPrev2Pvt
+        pStartMedian := math.avg(pPrevPvt, pPrev2Pvt)
+        offsetEnd = (iLastPvt - iPrevPvt) % 2 != 0 ? (pStartMedian - pEndMedian) * 0.5 / math.abs(iStartMedian - iEndMedian - 0.5) : 0
+        pEndMedian += offsetEnd
+
+    else if type == "Modified Schiff"
+        iStartMedian := math.floor(math.avg(iPrevPvt, iPrev2Pvt))
+        pStartMedian := math.avg(pPrevPvt, pPrev2Pvt)
+        offset = (pStartMedian - pEndMedian) * 0.5 / math.abs(iStartMedian - iEndMedian - 0.5) 
+        pStartMedian += (iPrev2Pvt - iPrevPvt) % 2 != 0 ? offset : 0
+        pEndMedian += (iLastPvt - iPrevPvt) % 2 != 0 ? offset : 0
+
+    else if type == "Inside"
+        iStartMedian := line.get_x2(lineLast)
+        slopeInside = (math.avg(pPrevPvt, pPrev2Pvt) - pLastPvt) / (math.avg(iPrevPvt, iPrev2Pvt) - iLastPvt)
+        pStartMedian := slopeInside *(iStartMedian - math.avg(iPrevPvt, iLastPvt)) + pEndMedian
+        offsetEnd = (iLastPvt - iPrevPvt) % 2 != 0 ? (pStartMedian - pEndMedian) * 0.5 / math.abs(iStartMedian - iEndMedian - 0.5) : 0
+        pEndMedian -= offsetEnd
+        
+    [iStartMedian, pStartMedian, iEndMedian, pEndMedian]
+
+
+drawPitchforkLine(iStart, pStart, iEnd, pEnd, color, width, style, extend) =>
+    _style = style == "Solid" ? line.style_solid : style == "Dotted" ? line.style_dotted : line.style_dashed
+    var id = line.new(iStart, pStart, iEnd, pEnd, xloc.bar_index, extend, color, _style, width)
+    line.set_xy1(id, iStart, pStart)
+    line.set_xy2(id, iEnd, pEnd)
+    id
+
+
+[iStartMedian, pStartMedian, iEndMedian, pEndMedian] = getMedianData(typeP)
+
+
+processLevel(show, level, color, width, style, lineIdOther1, lineIdOther2) =>
+    if show
+        iEndMedianWithotRound = math.avg(iPrevPvt, iLastPvt)
+        pEndMedianWithotOffset = math.avg(pPrevPvt, pLastPvt)
+        iDiff = math.abs(iPrevPvt - iLastPvt) / 2
+        pDiff = math.abs(pPrevPvt - pLastPvt) / 2
+        slopeMedian = (pEndMedian - pStartMedian) / (iEndMedian - iStartMedian)
+        
+    
+    	tempUp = pPrevPvt > pLastPvt ? iEndMedianWithotRound - iDiff * level : iEndMedianWithotRound + iDiff * level
+    	isIntBarIndexUp =  math.ceil(tempUp) - tempUp
+
+        iStartUp = math.ceil(tempUp)
+        iEndUp = iStartUp + 1
+    
+        pStartUp = pEndMedianWithotOffset + pDiff * level
+        pEndUp = slopeMedian * (iEndUp - tempUp) + pStartUp
+        offsetUp = isIntBarIndexUp == 0 ? 0 : (pStartUp - pEndUp) * (isIntBarIndexUp)  / (tempUp - iEndUp)
+        
+        
+        tempDown = pPrevPvt > pLastPvt ? iEndMedianWithotRound + iDiff * level : iEndMedianWithotRound - iDiff * level
+        isIntBarIndexDown =  tempDown - math.ceil(tempDown)
+        
+        iStartDown = math.ceil(tempDown)
+        iEndDown = iStartDown + 1
+    
+        pStartDown = pEndMedianWithotOffset - pDiff * level 
+        pEndDown = slopeMedian * (iEndDown - tempDown) + pStartDown
+        offsetDown = isIntBarIndexDown == 0 ? 0 : (pStartDown - pEndDown) * (isIntBarIndexDown) / (tempDown - iEndDown)
+
+
+        lineId1 = drawPitchforkLine(iStartUp, pStartUp + offsetUp, iEndUp, pEndUp, color, width, style, extendLine)
+        lineId2 = drawPitchforkLine(iStartDown, pStartDown - offsetDown, iEndDown, pEndDown, color, width, style, extendLine)
+        
+        if not na(lineIdOther1)
+            linefill.new(lineId1, lineIdOther1, color = color.new(color, backgroundTransparency))
+            linefill.new(lineId2, lineIdOther2, color = color.new(color, backgroundTransparency))
+        else
+            linefill.new(lineId1, lineId2, color = color.new(color, backgroundTransparency))
+        [lineId1, lineId2]
+    else
+        [lineIdOther1, lineIdOther2]
+
+show_0_25 = input(false, "", inline = "level0")
+value_0_25 = input.float(0.25, "", minval = .0, step = .1, inline = "level0")
+color_0_25 = input(#ffb74d, "", inline = "level0")
+width_0_25 = input.int(1, "", minval = 1, inline = "level0")
+style_0_25 = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "level0")
+    
+show_0_382 = input(false, "", inline = "level1")
+value_0_382 = input.float(0.382, "", minval = .0, step = .1, inline = "level1")
+color_0_382 = input(#81c784, "", inline = "level1")
+width_0_382 = input.int(1, "", minval = 1, inline = "level1")
+style_0_382 = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "level1")
+
+show_0_5 = input(true, "", inline = "level2")
+value_0_5 = input.float(0.5, "", minval = .0, step = .1, inline = "level2")
+color_0_5 = input(#4caf50, "", inline = "level2")
+width_0_5 = input.int(1, "", minval = 1, inline = "level2")
+style_0_5 = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "level2")
+
+show_0_618 = input(false, "", inline = "level3")
+value_0_618 = input.float(0.618, "", minval = .0, step = .1, inline = "level3")
+color_0_618 = input(#009688, "", inline = "level3")
+width_0_618 = input.int(1, "", minval = 1, inline = "level3")
+style_0_618 = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "level3")
+
+show_0_75 = input(false, "", inline = "level4")
+value_0_75 = input.float(0.75, "", minval = .0, step = .1, inline = "level4")
+color_0_75 = input(#64b5f6, "", inline = "level4")
+width_0_75 = input.int(1, "", minval = 1, inline = "level4")
+style_0_75 = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "level4")
+
+show_1 = input(true, "", inline = "level5")
+value_1 = input.float(1, "", minval = .0, step = .1, inline = "level5")
+color_1 = input(#2962ff, "", inline = "level5")
+width_1 = input.int(1, "", minval = 1, inline = "level5")
+style_1 = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "level5")
+
+show_1_5 = input(false, "", inline = "level6")
+value_1_5 = input.float(1.5, "", minval = .0, step = .1, inline = "level6")
+color_1_5 = input(#9c27b0, "", inline = "level6")
+width_1_5 = input.int(1, "", minval = 1, inline = "level6")
+style_1_5 = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "level6")
+
+show_1_75 = input(false, "", inline = "level7")
+value_1_75 = input.float(1.75, "", minval = .0, step = .1, inline = "level7")
+color_1_75 = input(#e91e63, "", inline = "level7")
+width_1_75 = input.int(1, "", minval = 1, inline = "level7")
+style_1_75 = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "level7")
+
+show_2 = input(false, "", inline = "level8")
+value_2 = input.float(2, "", minval = .0, step = .1, inline = "level8") 
+color_2 = input(#e91e63, "", inline = "level8")
+width_2 = input.int(1, "", minval = 1, inline = "level8")
+style_2 = input.string("Solid", "", options = ["Dashed", "Dotted", "Solid"], inline = "level8")
+    
+
+if typeP == "Inside"
+    drawPitchforkLine(iEndMedian, pEndMedian, iStartMedian, pStartMedian, medianColor, medianWidth, medianStyle, extendLine)
+else
+    drawPitchforkLine(iStartMedian, pStartMedian, iEndMedian, pEndMedian, medianColor, medianWidth, medianStyle, extendLine)
+    
+drawPitchforkLine(iPrevPvt, pPrevPvt, iLastPvt, pLastPvt, medianColor, medianWidth, medianStyle, extend.none)
+
+if typeP != "Original"
+    drawPitchforkLine(iPrev2Pvt, pPrev2Pvt, iPrevPvt, pPrevPvt, medianColor, medianWidth, medianStyle, extend.none)
+
+if typeP == "Inside"
+    drawPitchforkLine(math.round(math.avg(iPrevPvt, iPrev2Pvt)), math.avg(pPrevPvt, pPrev2Pvt), iLastPvt, pLastPvt, medianColor, medianWidth, medianStyle, extend.none)
+
+[lineId0_1, lineId0_2] = processLevel(show_0_25, value_0_25, color_0_25, width_0_25, style_0_25, line(na), line(na))
+[lineId1_1, lineId1_2] = processLevel(show_0_382, value_0_382, color_0_382, width_0_382, style_0_382, lineId0_1, lineId0_2)
+[lineId2_1, lineId2_2] = processLevel(show_0_5, value_0_5, color_0_5, width_0_5, style_0_5, lineId1_1, lineId1_2)
+[lineId3_1, lineId3_2] = processLevel(show_0_618, value_0_618, color_0_618, width_0_618, style_0_618, lineId2_1, lineId2_2)
+[lineId4_1, lineId4_2] = processLevel(show_0_75, value_0_75, color_0_75, width_0_75, style_0_75, lineId3_1, lineId3_2)
+[lineId5_1, lineId5_2] = processLevel(show_1, value_1, color_1, width_1, style_1, lineId4_1, lineId4_2)
+[lineId6_1, lineId6_2] = processLevel(show_1_5, value_1_5, color_1_5, width_1_5, style_1_5, lineId5_1, lineId5_2)
+[lineId7_1, lineId7_2] = processLevel(show_1_75, value_1_75, color_1_75, width_1_75, style_1_75, lineId6_1, lineId6_2)
+[lineId8_1, lineId8_2] = processLevel(show_2, value_2, color_2, width_2, style_2, lineId7_1, lineId7_2)
