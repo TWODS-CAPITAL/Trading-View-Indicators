@@ -1,0 +1,26 @@
+html,
+body {
+	font-family: 'Trebuchet MS', Roboto, Ubuntu, sans-serif;
+	background: #f9fafb;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.floating-tooltip-2 {
+	width: 96px;
+	height: 80px;
+	position: absolute;
+	display: none;
+	padding: 8px;
+	box-sizing: border-box;
+	font-size: 12px;
+	color: #131722;
+	background-color: rgba(255, 255, 255, 1);
+	text-align: left;
+	z-index: 1000;
+	top: 12px;
+	left: 12px;
+	pointer-events: none;
+	border: 1px solid rgba(0, 150, 136, 1);
+	border-radius: 2px;
+}
