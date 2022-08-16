@@ -7,7 +7,6 @@ Technical indicators are used by traders to gain insight into the supply and dem
 </p>
 
 
-All Technical Indicators are present in <a href="https://github.com/TWODS-CAPITAL/Trading-View-Indicators/tree/main/Technical-Indicators"> Technical Indicator Folder. </a>
 
 <h4>Where to Input the technical indicator code from the Pine Script. 👨🏻‍💻 </h4>
 
