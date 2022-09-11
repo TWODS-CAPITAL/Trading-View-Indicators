@@ -1,0 +1,19 @@
+html,
+body {
+	font-family: 'Trebuchet MS', Roboto, Ubuntu, sans-serif;
+	background: #f9fafb;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.sma-legend {
+	width: 96px;
+	height: 70px;
+	position: absolute;
+	padding: 8px;
+	font-size: 14px;
+	background-color: rgba(255, 255, 255, 0.23);
+	text-align: left;
+	z-index: 1000;
+	pointer-events: none;
+}
